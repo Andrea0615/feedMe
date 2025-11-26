@@ -2,6 +2,7 @@
   "name": "feedme",
   "private": true,
   "version": "0.0.0",
+  "proxy": "htpps://localhost:5001",
   "type": "module",
   "scripts": {
     "dev": "vite",

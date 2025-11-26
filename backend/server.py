@@ -1,5 +1,8 @@
 from flask import Flask
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)
 
 # Members API Route 
 
@@ -11,7 +14,5 @@ def members():
 
 #Para correr la app 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5001, debug=True) 
+    app.run(host='127.0.0.1', port=5001, debug=True)  #ponemos el debug porq estamos en development
     
-    #ponemos el debug porq estamos en development
-
