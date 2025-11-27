@@ -1,7 +1,17 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+import bcrypt
 
-def hash_password(raw_password: str) -> str:
-    return generate_password_hash(raw_password)
+def hash_password(password_str: str) -> bytes:
+    # Byte converting
+    passwd_bytes = password_str.encode()
 
-def verify_password(raw_password: str, hashed_password: str) -> bool:
-    return check_password_hash(hashed_password, raw_password)
+    # Generate salt and hash
+    salt = bcrypt.gensalt() 
+    generated_hash = bcrypt.hashpw(passwd_bytes, salt)
+
+    # This is the thing we should store in the database
+    return generated_hash.decode() #el decode para guardarlo como string
+
+def verify_password(password_str: str, stored_hash: str) -> bool:
+    passwd_bytes = password_str.encode()
+    stored_hash_bytes = stored_hash.encode()
+    return bcrypt.checkpw(passwd_bytes, stored_hash_bytes)

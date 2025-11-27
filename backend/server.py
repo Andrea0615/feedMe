@@ -1,17 +1,20 @@
 from flask import Flask
+from extensions.db import db
+from extensions.cors import cors
+from extensions.jwt import jwt
 
-app = Flask(__name__)
- 
-#Falta añadir el cors
+# Importar blueprints
+from routes.auth_routes import auth_bp
 
-#Ruta para probar la conexion de flask con react
-@app.route("/members")
-def members():
-    return {"members": ["Member1", "Member2", "Member3" ]}
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object("config.Config")
 
+    db.init_app(app)
+    cors.init_app(app)
+    jwt.init_app(app)
 
+    # REGISTRAR RUTAS
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
 
-#Para correr la app 
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5001, debug=True)  #ponemos el debug porq estamos en development
-    
+    return app
