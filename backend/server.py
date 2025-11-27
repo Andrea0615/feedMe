@@ -1,16 +1,15 @@
 from flask import Flask
-from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
-
-# Members API Route 
-
+ 
+#Falta añadir el cors
 
 #Ruta para probar la conexion de flask con react
 @app.route("/members")
 def members():
     return {"members": ["Member1", "Member2", "Member3" ]}
+
+
 
 #Para correr la app 
 if __name__ == '__main__':

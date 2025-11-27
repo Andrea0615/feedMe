@@ -1,2 +1,15 @@
+# FRONTEND (dev)
 /frontend/node_modules
+/frontend/dist
+/frontend/.env*
+
+# BACKEND (dev)
+/backend/__pycache__
 /backend/.env
+/backend/*.pyc
+/backend/instance/
+
+# GLOBAL
+.DS_Store
+.env
+*.log
