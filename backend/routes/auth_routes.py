@@ -32,13 +32,9 @@ def login():
     if not usuario or not verify_password(data["contrasena"], usuario.contrasena):
         return jsonify({"error": "Credenciales inválidas"}), 401
 
-    token = generate_token(usuario.id)
+    token = generate_token(usuario.id_usuario)
 
     return jsonify({
         "msg": "Login exitoso",
         "token": token
     }), 200
-
-
-
-
