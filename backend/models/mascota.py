@@ -10,3 +10,6 @@ class Mascota(db.Model):
     peso_kg = db.Column(db.Float)
 
     usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable=False)
+
+    def __repr__(self):
+        return f"<Mascota {self.nombre}>"
