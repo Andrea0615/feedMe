@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from extensions.db import db
-from models.usuario import Usuario
+from models.Usuario import Usuario
 from utils.security import hash_password, verify_password
 from utils.token import generate_token
 

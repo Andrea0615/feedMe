@@ -26,7 +26,7 @@ export function loginUser(data) {
 
 // REGISTER PET
 export function registrarMascota(data) {
-    return API.post("/mascotas/register", data);
+    return API.post("/mascota/register", data);
 }
 
 export function getHomeInfo() {

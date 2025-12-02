@@ -5,7 +5,6 @@ function RegistrarMascota() {
     // Datos de la mascota
     const [nombre, setNombre] = useState("");
     const [edad, setEdad] = useState("");
-    const [especie, setEspecie] = useState("");
     const [peso, setPeso] = useState("");
 
     // Plan alimenticio
@@ -31,7 +30,6 @@ function RegistrarMascota() {
             mascota: {
                 nombre,
                 edad: Number(edad),
-                especie,
                 peso: Number(peso)
             },
             alimentacion: {
@@ -76,13 +74,6 @@ function RegistrarMascota() {
                         type="number"
                         value={edad}
                         onChange={(e) => setEdad(e.target.value)}
-                    />
-
-                    <input
-                        className="form-control mb-2"
-                        placeholder="Especie"
-                        value={especie}
-                        onChange={(e) => setEspecie(e.target.value)}
                     />
 
                     <input
