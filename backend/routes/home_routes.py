@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from utils.token import login_required
-from models.Usuario import Usuario
+from models.usuario import Usuario
 from models.mascota import Mascota
 from models.PlanAlimenticio import PlanAlimenticio
 from models.Horarios import Horario
