@@ -8,7 +8,7 @@ import datetime
 
 mascotas_bp = Blueprint("mascotas_bp", __name__)
 
-@mascotas_bp.route("/registro", methods=["POST"])
+@mascotas_bp.route("/register", methods=["POST"])
 @login_required
 def registrar_mascota():
     data = request.get_json()
