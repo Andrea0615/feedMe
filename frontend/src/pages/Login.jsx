@@ -19,7 +19,7 @@ function Login() {
             localStorage.setItem("token", res.data.token);
 
             alert("Login correcto");
-            navigate("/register-pet"); // redirigir al dashboard o a registrar mascota
+            navigate("/home"); // redirigir al dashboard o a registrar mascota
 
         } catch (err) {
             console.log(err);

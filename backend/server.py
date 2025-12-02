@@ -1,7 +1,7 @@
 from flask import Flask
 from extensions.db import db
-from extensions.cors import cors
 from config import Config
+from flask_cors import CORS
 # Importar blueprints
 from routes.auth_routes import auth_bp
 from routes.pet_routes import mascotas_bp
@@ -13,7 +13,8 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
-    cors.init_app(app)
+    CORS(app, resources={r"/*": {"origins": "*"}})
+
  
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
