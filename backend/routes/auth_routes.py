@@ -7,7 +7,7 @@ from utils.token import generate_token
 auth_bp = Blueprint("auth_bp", __name__)
 
 @auth_bp.route("/register", methods=["POST"])
-def register():
+def registrar():
     data = request.get_json()
 
     hashed = hash_password(data["contrasena"])

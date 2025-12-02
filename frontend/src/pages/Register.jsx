@@ -1,62 +1,63 @@
 import { useState } from "react";
-import api from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/api";
 
 function Register() {
-  const [nombre, setNombre] = useState("");
-  const [correo, setCorreo] = useState("");
-  const [contrasena, setContrasena] = useState("");
-  const navigate = useNavigate();
+    const [nombre, setNombre] = useState("");
+    const [correo, setCorreo] = useState("");
+    const [contrasena, setContrasena] = useState("");
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    try {
-      await api.post("/auth/register", {
-        nombre,
-        correo,
-        contrasena
-      });
+        try {
+            await registerUser({
+                nombre,
+                correo,
+                contrasena,
+            });
 
-      alert("Usuario creado correctamente");
-      navigate("/login");
+            alert("Usuario registrado correctamente");
+        } catch (err) {
+            console.error(err);
+            alert("Error al registrar usuario");
+        }
+    };
 
-    } catch{
-      alert("Error al crear usuario");
-    }
-  };
+    return (
+        <div className="container mt-4">
+            <h2>Crear Cuenta</h2>
 
-  return (
-    <div className="container mt-5" style={{ maxWidth: "400px" }}>
-      <h2>Crear cuenta</h2>
-      <form onSubmit={handleRegister}>
-        <input
-          className="form-control mb-2"
-          placeholder="Nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-        />
+            <form onSubmit={handleSubmit} className="mt-3">
+                <input
+                    className="form-control mb-3"
+                    placeholder="Nombre"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    required
+                />
 
-        <input
-          className="form-control mb-2"
-          type="email"
-          placeholder="Correo"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-        />
+                <input
+                    className="form-control mb-3"
+                    placeholder="Correo"
+                    type="email"
+                    value={correo}
+                    onChange={(e) => setCorreo(e.target.value)}
+                    required
+                />
 
-        <input
-          className="form-control mb-3"
-          type="password"
-          placeholder="Contraseña"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
-        />
+                <input
+                    className="form-control mb-3"
+                    placeholder="Contraseña"
+                    type="password"
+                    value={contrasena}
+                    onChange={(e) => setContrasena(e.target.value)}
+                    required
+                />
 
-        <button className="btn btn-primary w-100">Registrarme</button>
-      </form>
-    </div>
-  );
+                <button className="btn btn-primary w-100">Crear Cuenta</button>
+            </form>
+        </div>
+    );
 }
 
 export default Register;

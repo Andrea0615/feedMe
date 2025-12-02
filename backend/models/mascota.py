@@ -9,7 +9,7 @@ class Mascota(db.Model):
     raza = db.Column(db.String(50))
     peso_kg = db.Column(db.Float)
 
-    usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey("usuario.id_usuario"), nullable=False)
 
     def __repr__(self):
         return f"<Mascota {self.nombre}>"

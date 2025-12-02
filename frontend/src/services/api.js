@@ -1,18 +1,37 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: "http://localhost:5001/api",
+const API = axios.create({
+    baseURL: "http://localhost:5001/api",
 });
 
-// Interceptor → Agrega token automáticamente si existe
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
+// Auto-agregar token a TODAS las peticiones
+API.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
 
-export default api;
+
+// REGISTER USER
+export function registerUser(data) {
+    return API.post("/auth/register", data);
+}
+
+// LOGIN USER
+export function loginUser(data) {
+    return API.post("/auth/login", data);
+}
+
+// REGISTER PET
+export function registrarMascota(data) {
+    return API.post("/mascotas/register", data);
+}
+
+export function getHomeInfo() {
+    return API.get("/home");
+}
+
+
+export default API;

@@ -1,54 +1,59 @@
 import { useState } from "react";
-import api from "../services/api";
+import { loginUser } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [correo, setCorreo] = useState("");
-  const [contrasena, setContrasena] = useState("");
-  const navigate = useNavigate();
+    const [correo, setCorreo] = useState("");
+    const [contrasena, setContrasena] = useState("");
+    const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    try {
-      const res = await api.post("/auth/login", {
-        correo,
-        contrasena
-      });
+        try {
+            const res = await loginUser({
+                correo,
+                contrasena
+            });
 
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
+            localStorage.setItem("token", res.data.token);
 
-    } catch {
-      alert("Credenciales inválidas");
-    }
-  };
+            alert("Login correcto");
+            navigate("/register-pet"); // redirigir al dashboard o a registrar mascota
 
-  return (
-    <div className="container mt-5" style={{ maxWidth: "400px" }}>
-      <h2>Iniciar sesión</h2>
-      <form onSubmit={handleLogin}>
-        
-        <input
-          className="form-control mb-2"
-          type="email"
-          placeholder="Correo"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
-        />
+        } catch (err) {
+            console.log(err);
+            alert("Credenciales inválidas");
+        }
+    };
 
-        <input
-          className="form-control mb-3"
-          type="password"
-          placeholder="Contraseña"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
-        />
+    return (
+        <div className="container mt-4">
+            <h2>Iniciar Sesión</h2>
 
-        <button className="btn btn-success w-100">Entrar</button>
-      </form>
-    </div>
-  );
+            <form onSubmit={handleSubmit} className="mt-3">
+                <input
+                    className="form-control mb-3"
+                    placeholder="Correo"
+                    type="email"
+                    value={correo}
+                    onChange={(e) => setCorreo(e.target.value)}
+                    required
+                />
+
+                <input
+                    className="form-control mb-3"
+                    placeholder="Contraseña"
+                    type="password"
+                    value={contrasena}
+                    onChange={(e) => setContrasena(e.target.value)}
+                    required
+                />
+
+                <button className="btn btn-primary w-100">Entrar</button>
+            </form>
+        </div>
+    );
 }
 
 export default Login;
