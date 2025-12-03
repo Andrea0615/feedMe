@@ -65,7 +65,7 @@ function Home() {
 
                         <button 
                             className="btn btn-secondary"
-                            onClick={() => navigate("/editar-plan")}
+                            onClick={() => navigate("/horarios/editar")}
                         >
                             Editar Horario
                         </button>
