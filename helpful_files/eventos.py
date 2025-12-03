@@ -93,7 +93,7 @@ def getEventType(sensor_id, value, scheduled, actual_hour):
     #To check if its missing food
     if sensor_id == 1 and value <= 5:
         eventType = eventTypes[2]
-        eventPriority = 3
+        eventPriority = 1
 
     return [eventType, eventPriority, getNowTime()] #return array with the event data
 
@@ -128,4 +128,5 @@ def detect_and_get_events(json_data, user_id):
 #         ]
 #     }
 #     eventDetection(json_data_sample)
+
 
