@@ -38,7 +38,7 @@ export function getMascotaInfo() {
 }
 
 export function actualizarMascota(data) {
-    return API.put("/mascota/edit", data);
+  return API.put("/mascota/update", data);
 }
 
 export function getUserInfo() {
@@ -47,6 +47,10 @@ export function getUserInfo() {
 
 export function updateUserInfo(data) {
     return API.put("/user/edit", data);
+}
+
+export function updateHorarios(horarios) {
+  return API.put("/mascota/horarios", {horarios,});
 }
 
 

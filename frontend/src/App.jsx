@@ -13,7 +13,7 @@ import MascotaInfo from "./pages/MascotaInfo"
 import EditMascota from "./pages/EditMascota";
 import Perfil from "./pages/Perfil";
 import EditarPerfil from "./pages/EditarPerfil";
-
+import EditarHorarios from "./pages/EditarHorarios";
 
 function App() {
     return (
@@ -28,6 +28,7 @@ function App() {
                 <Route path="/editar-mascota" element={<PrivateRoute> <EditMascota /> </PrivateRoute>} />
                 <Route path="/ver-perfil" element={<PrivateRoute> <Perfil /> </PrivateRoute>} />
                 <Route path="/editar-perfil" element={<PrivateRoute> <EditarPerfil /> </PrivateRoute>} />
+                <Route path="/horarios/editar" element={<PrivateRoute> <EditarHorarios /> </PrivateRoute>} />
             </Routes>
         </BrowserRouter>
     );
