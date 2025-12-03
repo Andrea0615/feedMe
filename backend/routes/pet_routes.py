@@ -119,3 +119,49 @@ def editar_mascota():
     return jsonify({
         "msg": "Mascota actualizada correctamente"
     }), 200
+
+@mascotas_bp.route("/horarios", methods=["PUT"])
+@login_required
+def editar_horarios():
+    data = request.get_json()
+
+    horarios_nuevos = data.get("horarios")
+
+    if not horarios_nuevos or len(horarios_nuevos) == 0:
+        return jsonify({"error": "Debes enviar al menos un horario"}), 400
+
+    #obtener mascota del usuario
+    mascota = Mascota.query.filter_by(usuario_id=request.user_id).first()
+    if not mascota:
+        return jsonify({"error": "Mascota no encontrada"}), 404
+
+    #obtener plan alimenticio
+    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id).first()
+    if not plan:
+        return jsonify({"error": "Plan alimenticio no encontrado"}), 404
+
+    #eliminar horarios actuales
+    Horario.query.filter_by(plan_id=plan.id).delete()
+
+    #insertar nuevos horarios
+    for h in horarios_nuevos:
+        try:
+            hora_obj = datetime.datetime.strptime(h["hora"], "%H:%M").time()
+            porcion = float(h["porcion"])
+        except Exception:
+            return jsonify({"error": "Formato de horario inválido"}), 400
+
+        nuevo_horario = Horario(
+            hora=hora_obj,
+            porcion=porcion,
+            plan_id=plan.id
+        )
+
+        db.session.add(nuevo_horario)
+
+    #guardar cambios
+    db.session.commit()
+
+    return jsonify({
+        "msg": "Horarios actualizados correctamente"
+    }), 200
