@@ -38,7 +38,7 @@ export function getMascotaInfo() {
 }
 
 export function actualizarMascota(data) {
-  return API.put("/mascota/update", data);
+  return API.put("/mascota/edit", data);
 }
 
 export function getUserInfo() {
