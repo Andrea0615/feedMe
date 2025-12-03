@@ -95,3 +95,27 @@ def obtener_mascota():
         "horarios": horarios_data
     }), 200
 
+@mascotas_bp.route("/update", methods=["PUT"])
+@login_required
+def editar_mascota():
+    data = request.get_json()
+
+    mascota = Mascota.query.filter_by(usuario_id=request.user_id).first()
+
+    if not mascota:
+        return jsonify({"error": "No hay mascota registrada"}), 404
+
+    if "nombre" in data:
+        mascota.nombre = data["nombre"]
+
+    if "edad" in data:
+        mascota.edad = data["edad"]
+
+    if "peso_kg" in data:
+        mascota.peso_kg = data["peso_kg"]
+
+    db.session.commit()
+
+    return jsonify({
+        "msg": "Mascota actualizada correctamente"
+    }), 200
