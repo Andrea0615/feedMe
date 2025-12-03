@@ -58,3 +58,40 @@ def registrar_mascota():
         "msg": "Mascota registrada correctamente",
         "mascota_id": mascota.id
     }), 201
+
+@mascotas_bp.route("/info", methods=["GET"])
+@login_required
+def obtener_mascota():
+    # 1. Obtener mascota del usuario loggeado
+    mascota = Mascota.query.filter_by(usuario_id=request.user_id).first()
+
+    if not mascota:
+        return jsonify({"error": "No hay mascota registrada"}), 404
+
+    # 2. Obtener plan alimenticio
+    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id).first()
+
+    if not plan:
+        return jsonify({"error": "No hay plan alimenticio registrado"}), 404
+
+    # 3. Obtener horarios
+    horarios = Horario.query.filter_by(plan_id=plan.id).order_by(Horario.hora).all()
+
+    horarios_data = [
+        {
+            "hora": h.hora.strftime("%H:%M"),
+            "porcion": h.porcion
+        }
+        for h in horarios
+    ]
+
+    return jsonify({
+        "mascota": {
+            "id": mascota.id,
+            "nombre": mascota.nombre,
+            "edad": mascota.edad,
+            "peso_kg": mascota.peso_kg
+        },
+        "horarios": horarios_data
+    }), 200
+

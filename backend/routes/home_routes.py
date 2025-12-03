@@ -24,7 +24,7 @@ def home_info():
     horarios = Horario.query.filter_by(plan_id=plan.id).order_by(Horario.hora).all()
 
     # Tomar siguiente horario
-    proxima = horarios[0].hora if horarios else None
+    proxima = horarios[0].hora.isoformat() if horarios else None
 
     return jsonify({
         "nombre_usuario": usuario.nombre,

@@ -1,20 +1,27 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Navbar from "./components/Navbar";
+import PrivateRoute from "./components/PrivateRoute";
+
+
 // Páginas
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import RegistrarMascota from "./pages/RegistrarMascota";
 import Home from "./pages/Home";
+import MascotaInfo from "./pages/MascotaInfo"
 
 
 function App() {
     return (
         <BrowserRouter>
+        <Navbar />
             <Routes>
-                <Route path="/home" element={<Home />} />
+                <Route path="/home" element={<PrivateRoute> <Home /> </PrivateRoute>} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/registrar-mascota" element={<RegistrarMascota />} />
+                <Route path="/registrar-mascota" element={<PrivateRoute> <RegistrarMascota /> </PrivateRoute>} />
+                <Route path="/ver-mascota" element={<PrivateRoute> <MascotaInfo /> </PrivateRoute>} />
             </Routes>
         </BrowserRouter>
     );

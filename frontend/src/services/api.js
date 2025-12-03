@@ -33,5 +33,9 @@ export function getHomeInfo() {
     return API.get("/home");
 }
 
+export function getMascotaInfo() {
+    return API.get("/mascota/info");
+}
+
 
 export default API;
