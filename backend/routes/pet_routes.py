@@ -95,7 +95,7 @@ def obtener_mascota():
         "horarios": horarios_data
     }), 200
 
-@mascotas_bp.route("/update", methods=["PUT"])
+@mascotas_bp.route("/edit", methods=["PUT"])
 @login_required
 def editar_mascota():
     data = request.get_json()

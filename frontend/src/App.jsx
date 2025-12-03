@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import RegistrarMascota from "./pages/RegistrarMascota";
 import Home from "./pages/Home";
 import MascotaInfo from "./pages/MascotaInfo"
+import EditMascota from "./pages/EditMascota";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/registrar-mascota" element={<PrivateRoute> <RegistrarMascota /> </PrivateRoute>} />
                 <Route path="/ver-mascota" element={<PrivateRoute> <MascotaInfo /> </PrivateRoute>} />
+                <Route path="/editar-mascota" element={<PrivateRoute> <EditMascota /> </PrivateRoute>} />
             </Routes>
         </BrowserRouter>
     );

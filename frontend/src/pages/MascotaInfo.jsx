@@ -50,6 +50,14 @@ function MascotaInfo() {
             >
                 Volver
             </button>
+
+            <button
+                className="btn btn-primary mt-4"
+                onClick={() => navigate("/editar-mascota")}
+            >
+                Editar Mascota
+            </button>
+
         </div>
     );
 }
