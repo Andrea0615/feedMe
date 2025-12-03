@@ -11,6 +11,8 @@ import RegistrarMascota from "./pages/RegistrarMascota";
 import Home from "./pages/Home";
 import MascotaInfo from "./pages/MascotaInfo"
 import EditMascota from "./pages/EditMascota";
+import Perfil from "./pages/Perfil";
+import EditarPerfil from "./pages/EditarPerfil";
 
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
                 <Route path="/registrar-mascota" element={<PrivateRoute> <RegistrarMascota /> </PrivateRoute>} />
                 <Route path="/ver-mascota" element={<PrivateRoute> <MascotaInfo /> </PrivateRoute>} />
                 <Route path="/editar-mascota" element={<PrivateRoute> <EditMascota /> </PrivateRoute>} />
+                <Route path="/ver-perfil" element={<PrivateRoute> <Perfil /> </PrivateRoute>} />
+                <Route path="/editar-perfil" element={<PrivateRoute> <EditarPerfil /> </PrivateRoute>} />
             </Routes>
         </BrowserRouter>
     );

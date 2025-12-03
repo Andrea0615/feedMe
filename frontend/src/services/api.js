@@ -41,5 +41,14 @@ export function actualizarMascota(data) {
     return API.put("/mascota/edit", data);
 }
 
+export function getUserInfo() {
+    return API.get("/user/info");
+}
+
+export function updateUserInfo(data) {
+    return API.put("/user/edit", data);
+}
+
+
 
 export default API;

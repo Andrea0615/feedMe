@@ -28,7 +28,7 @@ function Home() {
             <div className="d-flex justify-content-end">
                 <button 
                     className="btn btn-outline-secondary"
-                    onClick={() => navigate("/perfil")}
+                    onClick={() => navigate("/ver-perfil")}
                 >
                     Perfil
                 </button>

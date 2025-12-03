@@ -13,7 +13,7 @@ function Navbar() {
     return (
         <nav className="navbar navbar-light bg-light px-3">
             <Link className="navbar-brand" to="/">FeedMe 🐶</Link>
-
+            <Link to="/home"> Home </Link>
             <div>
                 {!isLoggedIn ? (
                     <Link className="btn btn-primary" to="/login">
