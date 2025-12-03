@@ -1,8 +1,3 @@
-#Eventos:
-# Comió o no comió
-# Hay comida o no
-# Ya se sirvió la comida
-
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
@@ -38,7 +33,7 @@ def getPlanAData(user_id):
     return horarios
 
 def getNowTime():
-    return datetime.now().replace(microsecond=0)
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def getClosestSchedule(schedule, actual_hour_str):
     actual_time = datetime.strptime(actual_hour_str, "%H:%M:%S").time()
@@ -102,10 +97,10 @@ def getEventType(sensor_id, value, scheduled, actual_hour):
 
     return [eventType, eventPriority, getNowTime()] #return array with the event data
 
-def eventDetection(data):
+def eventDetection(data, user_id):
     event_reg = [] 
 
-    scheduled = getPlanAData(user_id=1)
+    scheduled = getPlanAData(user_id)
     str_hour = data["hora"]
     # ts_utc = datetime.strptime(hora_str, "%H:%M:%S")
     # ts_utc = datetime.combine(datetime.today(), ts_utc.time())
@@ -118,8 +113,8 @@ def eventDetection(data):
 
     return event_reg
 
-def detect_and_get_events(json_data):
-    return eventDetection(json_data)
+def detect_and_get_events(json_data, user_id):
+    return eventDetection(json_data, user_id)
 
 # if __name__ == "__main__":
 #     print(getPlanAData(1))
