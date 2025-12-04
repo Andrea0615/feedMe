@@ -11,7 +11,7 @@ home_bp = Blueprint("home_bp", __name__)
 @login_required
 def home_info():
     usuario = Usuario.query.get(request.user_id)
-    mascota = Mascota.query.filter_by(usuario_id=usuario.id_usuario).first()
+    mascota = Mascota.query.filter_by(usuario_id=usuario.id_cuenta).first()
 
     if not mascota:
         return jsonify({
@@ -20,8 +20,8 @@ def home_info():
         })
 
     # Obtener su plan
-    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id).first()
-    horarios = Horario.query.filter_by(plan_id=plan.id).order_by(Horario.hora).all()
+    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id_mascota).first()
+    horarios = Horario.query.filter_by(plan_id=plan.id_plan).order_by(Horario.hora).all()
 
     # Tomar siguiente horario
     proxima = horarios[0].hora.isoformat() if horarios else None

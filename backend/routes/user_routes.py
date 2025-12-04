@@ -13,7 +13,7 @@ def get_info():
     usuario = Usuario.query.get(request.user_id)
 
     return jsonify({
-        "id": usuario.id_usuario,
+        "id": usuario.id_cuenta,
         "nombre": usuario.nombre,
         "correo": usuario.correo
     }), 200

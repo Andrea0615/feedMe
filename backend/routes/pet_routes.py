@@ -47,7 +47,7 @@ def registrar_mascota():
     a = data["alimentacion"]
     plan = PlanAlimenticio(
         objetivo="Plan generado automáticamente",
-        mascota_id=mascota.id
+        mascota_id=mascota.id_mascota
     )
     db.session.add(plan)
     db.session.flush()
@@ -61,7 +61,7 @@ def registrar_mascota():
         horario = Horario(
             hora=hora_obj,
             porcion=h["porcion"],
-            plan_id=plan.id
+            plan_id=plan.id_plan
         )
         db.session.add(horario)
 
@@ -78,7 +78,7 @@ def registrar_mascota():
 
     return jsonify({
         "msg": "Mascota registrada correctamente",
-        "mascota_id": mascota.id
+        "mascota_id": mascota.id_mascota
     }), 201
 
 
@@ -93,12 +93,12 @@ def obtener_mascota():
     if not mascota:
         return jsonify({"error": "No hay mascota registrada"}), 404
 
-    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id).first()
+    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id_mascota).first()
 
     if not plan:
         return jsonify({"error": "No hay plan alimenticio registrado"}), 404
 
-    horarios = Horario.query.filter_by(plan_id=plan.id).order_by(Horario.hora).all()
+    horarios = Horario.query.filter_by(plan_id=plan.id_plan).order_by(Horario.hora).all()
 
     horarios_data = [
         {
@@ -110,7 +110,7 @@ def obtener_mascota():
 
     return jsonify({
         "mascota": {
-            "id": mascota.id,
+            "id": mascota.id_mascota,
             "nombre": mascota.nombre,
             "edad": mascota.edad,
             "peso_kg": mascota.peso_kg
@@ -157,12 +157,12 @@ def editar_horarios():
     if not mascota:
         return jsonify({"error": "Mascota no encontrada"}), 404
 
-    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id).first()
+    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id_mascota).first()
     if not plan:
         return jsonify({"error": "Plan alimenticio no encontrado"}), 404
 
     # Borrar horarios actuales
-    Horario.query.filter_by(plan_id=plan.id).delete()
+    Horario.query.filter_by(plan_id=plan.id_plan).delete()
 
     horarios_payload = []  # MQTT
 

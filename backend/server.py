@@ -27,9 +27,7 @@ def create_app():
 
     return app
 
-if __name__ == "__main__": #esto lo añadi para probarlo con sqlite, no se si si vaya con maria db
+if __name__ == "__main__":
     app = create_app()
-    with app.app_context():
-        db.create_all()
     app.run(debug=True, port=5001)
 
