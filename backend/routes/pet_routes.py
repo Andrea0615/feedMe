@@ -4,82 +4,105 @@ from models.mascota import Mascota
 from models.PlanAlimenticio import PlanAlimenticio
 from models.Horarios import Horario
 from utils.token import login_required
-import datetime 
+from utils.mqtt_sender import publish_schedule_to_device
+import datetime
 
 mascotas_bp = Blueprint("mascotas_bp", __name__)
 
+# =========================================================
+#  UTILIDAD: PARSEAR HORAS CON O SIN SEGUNDOS
+# =========================================================
+def parse_time_flexible(hora_str):
+    """
+    Acepta formatos:
+    - 'HH:MM'
+    - 'HH:MM:SS'
+    """
+    partes = hora_str.split(":")
+    if len(partes) == 3:
+        return datetime.datetime.strptime(hora_str, "%H:%M:%S").time()
+    return datetime.datetime.strptime(hora_str, "%H:%M").time()
+
+
+# =========================================================
+#  REGISTRAR MASCOTA + PLAN + HORARIOS + MQTT
+# =========================================================
 @mascotas_bp.route("/register", methods=["POST"])
 @login_required
 def registrar_mascota():
     data = request.get_json()
 
+    # --- Mascota ---
     m = data["mascota"]
-
     mascota = Mascota(
         nombre=m["nombre"],
         edad=m.get("edad"),
         peso_kg=m.get("peso"),
         usuario_id=request.user_id
     )
-
     db.session.add(mascota)
     db.session.flush()
 
-
-
+    # --- Plan ---
     a = data["alimentacion"]
-
     plan = PlanAlimenticio(
         objetivo="Plan generado automáticamente",
         mascota_id=mascota.id
     )
-
     db.session.add(plan)
     db.session.flush()
 
-    for h in a["horarios"]:
+    # --- Horarios ---
+    horarios_payload = []  # Para MQTT
 
-        # Convert time string → datetime.time
-        # "08:30" → hour=8, minute=30
-        hora_str = h["hora"]
-        hora_obj = datetime.datetime.strptime(hora_str, "%H:%M").time()
+    for h in a["horarios"]:
+        hora_obj = parse_time_flexible(h["hora"])
 
         horario = Horario(
             hora=hora_obj,
             porcion=h["porcion"],
             plan_id=plan.id
         )
-
         db.session.add(horario)
 
+        # Enviar siempre HH:MM:SS
+        horarios_payload.append({
+            "hora": hora_obj.strftime("%H:%M:%S"),
+            "porcion": h["porcion"]
+        })
+
     db.session.commit()
+
+    # Enviar a ESP32
+    publish_schedule_to_device(horarios_payload)
 
     return jsonify({
         "msg": "Mascota registrada correctamente",
         "mascota_id": mascota.id
     }), 201
 
+
+# =========================================================
+#  OBTENER INFORMACIÓN DE LA MASCOTA
+# =========================================================
 @mascotas_bp.route("/info", methods=["GET"])
 @login_required
 def obtener_mascota():
-    # 1. Obtener mascota del usuario loggeado
     mascota = Mascota.query.filter_by(usuario_id=request.user_id).first()
 
     if not mascota:
         return jsonify({"error": "No hay mascota registrada"}), 404
 
-    # 2. Obtener plan alimenticio
     plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id).first()
 
     if not plan:
         return jsonify({"error": "No hay plan alimenticio registrado"}), 404
 
-    # 3. Obtener horarios
     horarios = Horario.query.filter_by(plan_id=plan.id).order_by(Horario.hora).all()
 
     horarios_data = [
         {
-            "hora": h.hora.strftime("%H:%M"),
+            "hora": h.hora.strftime("%H:%M:%S"),  # SIEMPRE enviamos segundos
             "porcion": h.porcion
         }
         for h in horarios
@@ -95,6 +118,10 @@ def obtener_mascota():
         "horarios": horarios_data
     }), 200
 
+
+# =========================================================
+#  EDITAR DATOS DE LA MASCOTA
+# =========================================================
 @mascotas_bp.route("/edit", methods=["PUT"])
 @login_required
 def editar_mascota():
@@ -105,63 +132,60 @@ def editar_mascota():
     if not mascota:
         return jsonify({"error": "No hay mascota registrada"}), 404
 
-    if "nombre" in data:
-        mascota.nombre = data["nombre"]
-
-    if "edad" in data:
-        mascota.edad = data["edad"]
-
-    if "peso_kg" in data:
-        mascota.peso_kg = data["peso_kg"]
+    mascota.nombre = data.get("nombre", mascota.nombre)
+    mascota.edad = data.get("edad", mascota.edad)
+    mascota.peso_kg = data.get("peso_kg", mascota.peso_kg)
 
     db.session.commit()
 
-    return jsonify({
-        "msg": "Mascota actualizada correctamente"
-    }), 200
+    return jsonify({"msg": "Mascota actualizada correctamente"}), 200
 
+
+# =========================================================
+#  EDITAR HORARIOS + MQTT
+# =========================================================
 @mascotas_bp.route("/horarios", methods=["PUT"])
 @login_required
 def editar_horarios():
     data = request.get_json()
-
     horarios_nuevos = data.get("horarios")
 
-    if not horarios_nuevos or len(horarios_nuevos) == 0:
+    if not horarios_nuevos:
         return jsonify({"error": "Debes enviar al menos un horario"}), 400
 
-    #obtener mascota del usuario
     mascota = Mascota.query.filter_by(usuario_id=request.user_id).first()
     if not mascota:
         return jsonify({"error": "Mascota no encontrada"}), 404
 
-    #obtener plan alimenticio
     plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id).first()
     if not plan:
         return jsonify({"error": "Plan alimenticio no encontrado"}), 404
 
-    #eliminar horarios actuales
+    # Borrar horarios actuales
     Horario.query.filter_by(plan_id=plan.id).delete()
 
-    #insertar nuevos horarios
+    horarios_payload = []  # MQTT
+
+    # Guardar nuevos
     for h in horarios_nuevos:
-        try:
-            hora_obj = datetime.datetime.strptime(h["hora"], "%H:%M").time()
-            porcion = float(h["porcion"])
-        except Exception:
-            return jsonify({"error": "Formato de horario inválido"}), 400
+        hora_obj = parse_time_flexible(h["hora"])
+        porcion = float(h["porcion"])
 
         nuevo_horario = Horario(
             hora=hora_obj,
             porcion=porcion,
             plan_id=plan.id
         )
-
         db.session.add(nuevo_horario)
 
-    #guardar cambios
+        horarios_payload.append({
+            "hora": hora_obj.strftime("%H:%M:%S"),
+            "porcion": porcion
+        })
+
     db.session.commit()
 
-    return jsonify({
-        "msg": "Horarios actualizados correctamente"
-    }), 200
+    # Enviar actualización a ESP32
+    publish_schedule_to_device(horarios_payload)
+
+    return jsonify({"msg": "Horarios actualizados correctamente"}), 200
