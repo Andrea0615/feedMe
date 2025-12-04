@@ -15,7 +15,7 @@ def registrar():
     nuevo = Usuario(
         nombre=data["nombre"],
         correo=data["correo"],
-        contrasena=hashed
+        password=hashed
     )
 
     db.session.add(nuevo)
@@ -29,7 +29,7 @@ def login():
     data = request.get_json()
     usuario = Usuario.query.filter_by(correo=data["correo"]).first()
 
-    if not usuario or not verify_password(data["contrasena"], usuario.contrasena):
+    if not usuario or not verify_password(data["contrasena"], usuario.password):
         return jsonify({"error": "Credenciales inválidas"}), 401
 
     token = generate_token(usuario.id_cuenta)
