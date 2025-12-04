@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import BottomNav from "./components/BottomNav";
 import PrivateRoute from "./components/PrivateRoute";
 
 
@@ -18,8 +19,9 @@ import EditarHorarios from "./pages/EditarHorarios";
 function App() {
     return (
         <BrowserRouter>
-        <Navbar />
+            <Navbar />
             <Routes>
+                <Route path="/" element={<PrivateRoute> <Home /> </PrivateRoute>} />
                 <Route path="/home" element={<PrivateRoute> <Home /> </PrivateRoute>} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
@@ -30,6 +32,7 @@ function App() {
                 <Route path="/editar-perfil" element={<PrivateRoute> <EditarPerfil /> </PrivateRoute>} />
                 <Route path="/horarios/editar" element={<PrivateRoute> <EditarHorarios /> </PrivateRoute>} />
             </Routes>
+            <BottomNav />
         </BrowserRouter>
     );
 }

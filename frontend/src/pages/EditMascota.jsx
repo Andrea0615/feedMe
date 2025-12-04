@@ -6,6 +6,7 @@ function EditMascota() {
     const [nombre, setNombre] = useState("");
     const [edad, setEdad] = useState("");
     const [peso, setPeso] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -28,6 +29,7 @@ function EditMascota() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         try {
             await actualizarMascota({
@@ -36,42 +38,56 @@ function EditMascota() {
                 peso_kg: Number(peso)
             });
 
-            alert("Mascota actualizada");
+            alert("Mascota actualizada ✅");
             navigate("/ver-mascota");
         } catch (err) {
             console.log(err);
             alert("Error actualizando mascota");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-4 mb-4">
             <h2>Editar Mascota</h2>
 
-            <form className="mt-3" onSubmit={handleSubmit}>
-                <input
-                    className="form-control mb-2"
-                    value={nombre}
-                    onChange={(e) => setNombre(e.target.value)}
-                />
+            <form className="card p-4" onSubmit={handleSubmit}>
+                <div className="mb-3">
+                    <label className="form-label">Nombre</label>
+                    <input
+                        className="form-control"
+                        value={nombre}
+                        onChange={(e) => setNombre(e.target.value)}
+                        required
+                    />
+                </div>
 
-                <input
-                    className="form-control mb-2"
-                    type="number"
-                    value={edad}
-                    onChange={(e) => setEdad(e.target.value)}
-                />
+                <div className="mb-3">
+                    <label className="form-label">Edad (años)</label>
+                    <input
+                        className="form-control"
+                        type="number"
+                        value={edad}
+                        onChange={(e) => setEdad(e.target.value)}
+                        required
+                    />
+                </div>
 
-                <input
-                    className="form-control mb-2"
-                    type="number"
-                    step="0.1"
-                    value={peso}
-                    onChange={(e) => setPeso(e.target.value)}
-                />
+                <div className="mb-4">
+                    <label className="form-label">Peso (kg)</label>
+                    <input
+                        className="form-control"
+                        type="number"
+                        step="0.1"
+                        value={peso}
+                        onChange={(e) => setPeso(e.target.value)}
+                        required
+                    />
+                </div>
 
-                <button className="btn btn-primary w-100 mt-3">
-                    Guardar cambios
+                <button className="btn btn-primary btn-large w-100" disabled={loading}>
+                    {loading ? "Guardando..." : "Guardar cambios"}
                 </button>
             </form>
         </div>

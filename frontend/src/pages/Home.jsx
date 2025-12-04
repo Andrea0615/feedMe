@@ -1,69 +1,108 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getHomeInfo } from "../services/api";
+import { getHomeInfo, getMascotaInfo } from "../services/api";
+import "../styles/home.css";
 
 function Home() {
     const [data, setData] = useState(null);
+    const [horarios, setHorarios] = useState([]);
+    const [nombreMascota, setNombreMascota] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        getHomeInfo()
-            .then(res => setData(res.data))
-            .catch(() => navigate("/login"));
+        async function loadData() {
+            try {
+                const res = await getHomeInfo();
+                setData(res.data);
+                
+                // Obtener los horarios y nombre por separado
+                if (res.data.tiene_mascota) {
+                    const mascotaRes = await getMascotaInfo();
+                    setHorarios(mascotaRes.data.horarios || []);
+                    setNombreMascota(mascotaRes.data.mascota.nombre || "");
+                }
+            } catch (err) {
+                console.log(err);
+                navigate("/login");
+            }
+        }
+        loadData();
     }, []);
 
     if (!data) return <div className="text-center mt-4">Cargando...</div>;
 
     return (
-        <div className="container mt-4" style={{ maxWidth: "450px" }}>
-            
-            <h2 className="fw-bold mb-3">Hola, {data.nombre_usuario} 👋</h2>
+        <div className="home-container">
+            <div className="home-header">
+                <h2 className="greeting">Hola, {data.nombre_usuario} 👋</h2>
+            </div>
 
             {!data.tiene_mascota ? (
-                <div
-                    className="p-4 rounded text-center"
-                    style={{ backgroundColor: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}
-                >
-                    <p className="mb-3">Aún no has registrado una mascota.</p>
+                <div className="home-content">
+                    <div className="empty-state">
+                        <div className="empty-icon">🐾</div>
+                        <h3>Sin mascota registrada</h3>
+                        <p>Comienza a registrar a tu mascota para gestionar sus horarios de comida</p>
+                    </div>
 
                     <button
-                        className="btn btn-primary w-100 py-2"
+                        className="btn btn-primary btn-large"
                         onClick={() => navigate("/registrar-mascota")}
                     >
                         Registrar Mascota
                     </button>
                 </div>
             ) : (
-                <>
-                    <div
-                        className="p-4 rounded mb-4"
-                        style={{ backgroundColor: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}
-                    >
-                        <h5>Próxima comida</h5>
-                        <p className="fs-5 mt-2">
-                            {data.proxima_comida ?? "Sin horarios"}
-                        </p>
-                    </div>
+                <div className="home-content">
+                    {/* Hero Pet Card */}
+                    <div className="hero-pet-card">
+                        <div className="hero-pet-image">
+                            <img
+                                src={data.mascota_foto || "https://www.poresto.com/crop/0-0-1140-855O1F0x0D1024x0C8846c116bc66478c0a67848c160cc0d5/media/fotografias/fotosnoticias/2021/11/29/157336.jpg"}
+                                alt={data.nombre_mascota || nombreMascota}
+                            />
+                        </div>
 
-                    <div className="d-flex flex-column gap-3">
                         <button
-                            className="btn btn-primary py-2"
+                            className="btn btn-primary btn-large w-100"
                             onClick={() => navigate("/ver-mascota")}
                         >
-                            Ver Mascota
-                        </button>
-
-                        <button
-                            className="btn btn-secondary py-2"
-                            onClick={() => navigate("/horarios/editar")}
-                        >
-                            Editar Horario
+                            Ver a {nombreMascota || data.nombre_mascota || "tu mascota"}
                         </button>
                     </div>
-                </>
+
+                    {/* Feeding Schedule Section */}
+                    <div className="feeding-section">
+                        <div className="feeding-section-header">
+                            <h3 className="section-title">Horarios de comida</h3>
+                            <button
+                                className="btn-edit-schedule"
+                                onClick={() => navigate("/horarios/editar")}
+                                title="Editar horarios"
+                            >
+                                ✎
+                            </button>
+                        </div>
+                        <div className="feeding-schedule-box">
+                            {horarios && horarios.length > 0 ? (
+                                <div className="schedule-list-home">
+                                    {horarios.map((h, i) => (
+                                        <div key={i} className="schedule-item-home">
+                                            <span className="schedule-time-home">{h.hora}</span>
+                                            <span className="schedule-portion-home">{h.porcion} g</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="no-schedule">Sin horarios registrados</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );
 }
 
 export default Home;
+

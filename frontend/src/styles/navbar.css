@@ -1,0 +1,78 @@
+.navbar-mobile {
+    background-color: #fff;
+    border-bottom: 1px solid #e8eef5;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(47, 93, 168, 0.06);
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2F5DA8;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.nav-link {
+    font-size: 1.5rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.nav-link:hover {
+    transform: scale(1.1);
+}
+
+.btn-nav-primary {
+    background-color: #2F5DA8 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-nav-primary:hover {
+    background-color: #254a84 !important;
+    transform: translateY(-1px);
+}
+
+.btn-nav-logout {
+    background-color: #fff !important;
+    color: #d32f2f !important;
+    border: 1px solid #ffcdd2 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-nav-logout:hover {
+    background-color: #ffebee !important;
+    border-color: #ef5350 !important;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getUserInfo } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import "../styles/perfil.css";
 
 function Perfil() {
     const [user, setUser] = useState(null);
@@ -11,7 +12,7 @@ function Perfil() {
             try {
                 const res = await getUserInfo();
                 setUser(res.data);
-            } catch  {
+            } catch {
                 navigate("/login");
             }
         }
@@ -21,16 +22,32 @@ function Perfil() {
     if (!user) return <div className="container mt-4">Cargando...</div>;
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-4 mb-4">
             <h2>Mi Perfil</h2>
 
-            <div className="card p-3 mt-3">
-                <p><strong>Nombre:</strong> {user.nombre}</p>
-                <p><strong>Correo:</strong> {user.correo}</p>
+            <div className="profile-card">
+                <div className="profile-avatar">👤</div>
+                <h3>{user.nombre}</h3>
+                <p className="profile-email">{user.correo}</p>
             </div>
 
-            <button className="btn btn-primary mt-3" onClick={() => navigate("/editar-perfil")}>
-                Editar Perfil
+            <div className="card p-4 mb-4">
+                <h5>Detalles</h5>
+                <div className="profile-detail">
+                    <span className="detail-label">👤 Nombre</span>
+                    <span className="detail-value">{user.nombre}</span>
+                </div>
+                <div className="profile-detail">
+                    <span className="detail-label">📧 Correo</span>
+                    <span className="detail-value">{user.correo}</span>
+                </div>
+            </div>
+
+            <button
+                className="btn btn-primary btn-large w-100"
+                onClick={() => navigate("/editar-perfil")}
+            >
+                ✎ Editar Perfil
             </button>
         </div>
     );

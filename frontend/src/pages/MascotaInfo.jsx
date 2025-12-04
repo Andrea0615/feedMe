@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMascotaInfo } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import "../styles/mascota.css";
 
 function MascotaInfo() {
     const [data, setData] = useState(null);
@@ -13,7 +14,7 @@ function MascotaInfo() {
                 setData(res.data);
             } catch (err) {
                 console.log(err);
-                navigate("/"); 
+                navigate("/");
             }
         }
         load();
@@ -22,42 +23,52 @@ function MascotaInfo() {
     if (!data) return <div className="container mt-4">Cargando...</div>;
 
     return (
-        <div className="container mt-4">
-            <h2>Mascota: {data.mascota.nombre}</h2>
+        <div className="container mt-4 mb-4">
+            <h2>Detalles</h2>
 
-            <div className="card p-3 mt-3">
-                <h5>Información</h5>
-                <p>Edad: {data.mascota.edad} años</p>
-                <p>Peso: {data.mascota.peso_kg} kg</p>
+            <div className="pet-card-full">
+                <img
+                    src={data.mascota.foto || "https://www.poresto.com/crop/0-0-1140-855O1F0x0D1024x0C8846c116bc66478c0a67848c160cc0d5/media/fotografias/fotosnoticias/2021/11/29/157336.jpg"}
+                    alt={data.mascota.nombre}
+                    className="pet-image-full"
+                />
+
+                <h2 className="pet-name-full">{data.mascota.nombre}</h2>
+
+                <div className="pet-badges">
+                    <span className="badge-item">
+                        <span className="badge-label">Edad</span>
+                        <span className="badge-value">{data.mascota.edad} años</span>
+                    </span>
+                    <span className="badge-item">
+                        <span className="badge-label">Peso</span>
+                        <span className="badge-value">{data.mascota.peso_kg} kg</span>
+                    </span>
+                </div>
             </div>
 
-            <div className="card p-3 mt-3">
-                <h5>Plan Alimenticio</h5>
+            <div className="card mb-4">
+                <div className="card-header-with-btn">
+                    <h5>Horarios de comida</h5>
+                    <button
+                        className="btn-edit-card"
+                        onClick={() => navigate("/editar-mascota")}
+                        title="Editar información"
+                    >
+                        ✎
+                    </button>
+                </div>
+                <div className="card-body">
+                    <div className="schedule-list">
+                        {data.horarios.map((h, i) => (
+                            <div key={i} className="schedule-item">
+                                <span className="schedule-time">{h.hora}</span>
+                                <span className="schedule-portion">{h.porcion} g</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
-
-            <div className="card p-3 mt-3">
-                <h5>Horarios</h5>
-                {data.horarios.map((h, i) => (
-                    <p key={i}>
-                        {h.hora} — {h.porcion} g
-                    </p>
-                ))}
-            </div>
-
-            <button
-                className="btn btn-secondary mt-4"
-                onClick={() => navigate("/")}
-            >
-                Volver
-            </button>
-
-            <button
-                className="btn btn-primary mt-4"
-                onClick={() => navigate("/editar-mascota")}
-            >
-                Editar Mascota
-            </button>
-
         </div>
     );
 }

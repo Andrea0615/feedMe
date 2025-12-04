@@ -3,93 +3,112 @@ import { getMascotaInfo, updateHorarios } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 function EditarHorarios() {
-  const [horarios, setHorarios] = useState([]);
-  const navigate = useNavigate();
+    const [horarios, setHorarios] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-  //cargar horarios actuales
-  useEffect(() => {
-    getMascotaInfo()
-      .then(res => {
-        setHorarios(res.data.horarios);
-      })
-      .catch(() => alert("Error al cargar horarios"));
-  }, []);
+    useEffect(() => {
+        getMascotaInfo()
+            .then(res => setHorarios(res.data.horarios))
+            .catch(() => alert("Error al cargar horarios"));
+    }, []);
 
-  //Cambiar un campo específico
-  const cambiarHorario = (index, campo, valor) => {
-    const copia = [...horarios];
-    copia[index][campo] = valor;
-    setHorarios(copia);
-  };
+    const cambiarHorario = (index, campo, valor) => {
+        const copia = [...horarios];
+        copia[index][campo] = valor;
+        setHorarios(copia);
+    };
 
-  //Agregar nuevo horario
-  const agregarHorario = () => {
-    setHorarios([...horarios, { hora: "", porcion: "" }]);
-  };
+    const agregarHorario = () => {
+        setHorarios([...horarios, { hora: "", porcion: "" }]);
+    };
 
-  //Eliminar horario
-  const eliminarHorario = (index) => {
-    const copia = horarios.filter((_, i) => i !== index);
-    setHorarios(copia);
-  };
+    const eliminarHorario = (index) => {
+        const copia = horarios.filter((_, i) => i !== index);
+        setHorarios(copia);
+    };
 
-  //Guardar cambios
-  const guardarCambios = async () => {
-    if (horarios.length === 0) {
-      alert("Debes tener al menos un horario");
-      return;
-    }
+    const guardarCambios = async () => {
+        if (horarios.length === 0) {
+            alert("Debes tener al menos un horario");
+            return;
+        }
 
-    try {
-      await updateHorarios(
-        horarios.map(h => ({
-          hora: h.hora,
-          porcion: Number(h.porcion),
-        }))
-      );
+        setLoading(true);
 
-      alert("Horarios actualizados ✅");
-      navigate("/home");
-    } catch (err) {
-      alert("Error al guardar horarios");
-      console.error(err);
-    }
-  };
+        try {
+            await updateHorarios(
+                horarios.map(h => ({
+                    hora: h.hora,
+                    porcion: Number(h.porcion),
+                }))
+            );
 
-  return (
-    <div>
-      <h2>Editar horarios de comida</h2>
+            alert("Horarios actualizados");
+            navigate("/home");
+        } catch (err) {
+            alert("Error al guardar horarios");
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-      {horarios.map((h, index) => (
-        <div key={index} style={{ display: "flex", gap: "10px", marginBottom: "8px" }}>
-          <input
-            type="time"
-            value={h.hora}
-            onChange={(e) => cambiarHorario(index, "hora", e.target.value)}
-            required
-          />
+    return (
+        <div className="container mt-4 mb-4">
+            <h2>Editar Horarios</h2>
 
-          <input
-            type="number"
-            placeholder="Porción (g)"
-            value={h.porcion}
-            onChange={(e) => cambiarHorario(index, "porcion", e.target.value)}
-            required
-          />
+            <div className="card p-4 mb-4">
+                <div className="mb-3">
+                    {horarios.map((h, index) => (
+                        <div key={index} className="d-flex gap-2 mb-2">
+                            <input
+                                type="time"
+                                className="form-control"
+                                value={h.hora}
+                                onChange={(e) => cambiarHorario(index, "hora", e.target.value)}
+                                required
+                            />
 
-          <button onClick={() => eliminarHorario(index)}>🗑</button>
+                            <input
+                                type="number"
+                                placeholder="Porción (g)"
+                                className="form-control"
+                                value={h.porcion}
+                                onChange={(e) => cambiarHorario(index, "porcion", e.target.value)}
+                                required
+                            />
+
+                            <button
+                                type="button"
+                                className="btn btn-danger"
+                                onClick={() => eliminarHorario(index)}
+                                style={{ width: "48px", padding: "0" }}
+                            >
+                                X
+                            </button>
+                        </div>
+                    ))}
+                </div>
+
+                <button
+                    type="button"
+                    className="btn btn-secondary w-100"
+                    onClick={agregarHorario}
+                >
+                    + Agregar horario
+                </button>
+            </div>
+
+            <button
+                className="btn btn-primary btn-large w-100 mb-4"
+                onClick={guardarCambios}
+                disabled={loading}
+            >
+                {loading ? "Guardando..." : "Guardar cambios"}
+            </button>
         </div>
-      ))}
-
-      <button onClick={agregarHorario}>+ Agregar horario</button>
-
-      <hr />
-
-      <button onClick={guardarCambios}>
-        Guardar cambios
-      </button>
-    </div>
-  );
+    );
 }
 
 export default EditarHorarios;
