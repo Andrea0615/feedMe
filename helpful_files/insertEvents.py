@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
+import paho.mqtt.client as mqtt
+import json
 
 # Import your event detection logic from Script A
 from eventos import detect_and_get_events  
+from receiveSensorData import listen_and_store
 
 
 def insertEvent(event_type, priority, timestamp, user_id):
@@ -35,18 +38,51 @@ def processIncomingData(json_data, user_id):
 
     return events
     
-if __name__ == "__main__":
-    json_data_sample = {
-        "hora": "14:07:00",
-        "horario": "14:07:00",
-        "sensores": [
-            {"id": 1, "valor": 2, "unidad": "cm"},
-            {"id": 2, "valor": 150, "unidad": "g"}
-        ]
-    }
-    user_id = 1
+def on_connect(client, userdata, flags, rc):
+    print("Connected to MQTT with code:", rc)
+    topic = userdata["topic"]
+    client.subscribe(topic)
+    print(f"Suscribed to topic: {topic}")
+    
 
-    events = processIncomingData(json_data_sample, user_id)
-    print("Eventos detectados:")
-    print(events)
+def on_message(client, userdata, msg):
+    print(f"\nReceived message on {msg.topic}:")
+    
+    try:
+        payload = json.loads(msg.payload.decode())
+        print("JSON received:", payload)
+
+        user_id = userdata["user_id"]
+
+        # Store in normalized_readings
+        listen_and_store(payload)
+
+        # Detect events
+        events = processIncomingData(payload, user_id)
+
+        print("Detected events:", events)
+
+    except json.JSONDecodeError:
+        print("Error: MQTT JSON not valid.")
+
+        
+def start_mqtt_listener(user_id):
+    BROKER = "broker.hivemq.com"
+    PORT = 1883
+    TOPIC = "IoT/testESP32/pub"
+
+    client = mqtt.Client(userdata={"topic": TOPIC, "user_id": user_id})
+
+    client.on_connect = on_connect
+    client.on_message = on_message
+
+    print("Conecting to MQTT...")
+    client.connect(BROKER, PORT, 60)
+    client.loop_forever()
+
+
+
+if __name__ == "__main__":
+    user_id = 1
+    start_mqtt_listener(user_id)
 
