@@ -1,3 +1,8 @@
+#Eventos:
+# Comió o no comió
+# Hay comida o no
+# Ya se sirvió la comida
+
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, timedelta
@@ -128,5 +133,4 @@ def detect_and_get_events(json_data, user_id):
 #         ]
 #     }
 #     eventDetection(json_data_sample)
-
 
