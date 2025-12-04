@@ -11,16 +11,37 @@ function Navbar() {
     };
 
     return (
-        <nav className="navbar navbar-light bg-light px-3">
-            <Link className="navbar-brand" to="/">FeedMe 🐶</Link>
-            <Link to="/home"> Home </Link>
-            <div>
+        <nav
+            className="navbar px-3"
+            style={{
+                backgroundColor: "#ffffff",
+                borderBottom: "1px solid #eee",
+                height: "60px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                position: "sticky",
+                top: 0,
+                zIndex: 100,
+            }}
+        >
+            <Link className="navbar-brand fw-bold" to="/" style={{ fontSize: "20px" }}>
+                FeedMe 🐶
+            </Link>
+
+            <div className="d-flex gap-3">
+                {isLoggedIn && (
+                    <Link className="text-decoration-none" to="/home">
+                        Home
+                    </Link>
+                )}
+
                 {!isLoggedIn ? (
-                    <Link className="btn btn-primary" to="/login">
+                    <Link className="btn btn-primary btn-sm" to="/login">
                         Login
                     </Link>
                 ) : (
-                    <button className="btn btn-danger" onClick={handleLogout}>
+                    <button className="btn btn-danger btn-sm" onClick={handleLogout}>
                         Logout
                     </button>
                 )}

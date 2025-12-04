@@ -11,27 +11,24 @@ function Login() {
         e.preventDefault();
 
         try {
-            const res = await loginUser({
-                correo,
-                contrasena
-            });
-
+            const res = await loginUser({ correo, contrasena });
             localStorage.setItem("token", res.data.token);
 
-            alert("Login correcto");
-            navigate("/home"); // redirigir al dashboard o a registrar mascota
-
-        } catch (err) {
-            console.log(err);
+            navigate("/home");
+        } catch {
             alert("Credenciales inválidas");
         }
     };
 
     return (
-        <div className="container mt-4">
-            <h2>Iniciar Sesión</h2>
+        <div className="container mt-4" style={{ maxWidth: "420px" }}>
+            <h2 className="text-center mb-4">Iniciar Sesión</h2>
 
-            <form onSubmit={handleSubmit} className="mt-3">
+            <form
+                onSubmit={handleSubmit}
+                className="p-4 rounded"
+                style={{ background: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}
+            >
                 <input
                     className="form-control mb-3"
                     placeholder="Correo"
@@ -50,7 +47,7 @@ function Login() {
                     required
                 />
 
-                <button className="btn btn-primary w-100">Entrar</button>
+                <button className="btn btn-primary w-100 py-2">Entrar</button>
             </form>
         </div>
     );

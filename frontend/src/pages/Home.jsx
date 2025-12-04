@@ -7,40 +7,27 @@ function Home() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function load() {
-            try {
-                const res = await getHomeInfo();
-                setData(res.data);
-            } catch (error) {
-                console.log(error);
-                navigate("/login");
-            }
-        }
-        load();
+        getHomeInfo()
+            .then(res => setData(res.data))
+            .catch(() => navigate("/login"));
     }, []);
 
-    if (!data) return <div className="container mt-4">Cargando...</div>;
+    if (!data) return <div className="text-center mt-4">Cargando...</div>;
 
     return (
-        <div className="container mt-4">
-
-            {/* Icono perfil */}
-            <div className="d-flex justify-content-end">
-                <button 
-                    className="btn btn-outline-secondary"
-                    onClick={() => navigate("/ver-perfil")}
-                >
-                    Perfil
-                </button>
-            </div>
-
-            <h2 className="mt-3">Hola, {data.nombre_usuario} 👋</h2>
+        <div className="container mt-4" style={{ maxWidth: "450px" }}>
+            
+            <h2 className="fw-bold mb-3">Hola, {data.nombre_usuario} 👋</h2>
 
             {!data.tiene_mascota ? (
-                <div className="mt-4">
-                    <p>Aún no has registrado una mascota.</p>
-                    <button 
-                        className="btn btn-primary w-100"
+                <div
+                    className="p-4 rounded text-center"
+                    style={{ backgroundColor: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}
+                >
+                    <p className="mb-3">Aún no has registrado una mascota.</p>
+
+                    <button
+                        className="btn btn-primary w-100 py-2"
                         onClick={() => navigate("/registrar-mascota")}
                     >
                         Registrar Mascota
@@ -48,23 +35,26 @@ function Home() {
                 </div>
             ) : (
                 <>
-                    <div className="card p-3 mt-4">
-                        <h4>Próxima comida</h4>
-                        <p className="fs-5">
-                            {data.proxima_comida ?? "No hay horarios configurados"}
+                    <div
+                        className="p-4 rounded mb-4"
+                        style={{ backgroundColor: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}
+                    >
+                        <h5>Próxima comida</h5>
+                        <p className="fs-5 mt-2">
+                            {data.proxima_comida ?? "Sin horarios"}
                         </p>
                     </div>
 
-                    <div className="d-flex flex-column gap-3 mt-4">
-                        <button 
-                            className="btn btn-primary"
+                    <div className="d-flex flex-column gap-3">
+                        <button
+                            className="btn btn-primary py-2"
                             onClick={() => navigate("/ver-mascota")}
                         >
                             Ver Mascota
                         </button>
 
-                        <button 
-                            className="btn btn-secondary"
+                        <button
+                            className="btn btn-secondary py-2"
                             onClick={() => navigate("/horarios/editar")}
                         >
                             Editar Horario
