@@ -33,7 +33,7 @@ def update_info():
         usuario.correo = data["correo"]
 
     if "contrasena" in data and data["contrasena"].strip() != "":
-        usuario.contrasena = hash_password(data["contrasena"])
+        usuario.password = hash_password(data["contrasena"])
 
     db.session.commit()
 
