@@ -61,7 +61,7 @@ def registrar_mascota():
         horario = Horario(
             hora=hora_obj,
             porcion=h["porcion"],
-            plan_id=plan.id_plan
+            id_plan=plan.id_plan
         )
         db.session.add(horario)
 
