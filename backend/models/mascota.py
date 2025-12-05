@@ -7,7 +7,6 @@ class Mascota(db.Model):
 
     nombre = db.Column(db.String(100), nullable=False)
     edad = db.Column(db.Integer, nullable=False)
-    raza = db.Column(db.String(100))
     peso_kg = db.Column(db.Numeric(5, 2), nullable=False)
 
     id_cuenta = db.Column(db.Integer, db.ForeignKey("cuenta.id_cuenta"), nullable=False)
