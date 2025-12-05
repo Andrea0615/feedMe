@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils.token import login_required
-from services.event_service import detect_and_get_events
-from utils.event_saver import save_detected_events
+from services.event_service import save_event
+from utils.event_detector import detect_and_get_events
 
 mqtt_bp = Blueprint("mqtt_bp", __name__)
 
@@ -14,7 +14,7 @@ def procesar_mqtt():
     eventos = detect_and_get_events(data, request.user_id)
 
     # 2. Guardarlos en MariaDB
-    save_detected_events(eventos, request.user_id)
+    save_event(eventos, request.user_id)
 
     return jsonify({
         "msg": "Datos procesados",
