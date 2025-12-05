@@ -35,15 +35,29 @@ def insert_normalized_readings(engine, table, data):
 
     with engine.begin() as conn:
         for sensor in data["sensores"]:
+            raw_value = sensor.get("valor")
+
+            # 🔍 Validar el valor del sensor
+            try:
+                if raw_value is None:
+                    clean_value = -1
+                else:
+                    clean_value = float(raw_value)
+            except:
+                clean_value = -1
+
+            # Insertar
             stmt = insert(table).values(
                 ts_utc=ts_utc,
-                valor_limpio=sensor["valor"],
-                unidades_convertidas=sensor["unidad"],
-                id_sensor=sensor["id"]
+                valor_limpio=clean_value,
+                unidades_convertidas=sensor.get("unidad", ""),
+                id_sensor=sensor.get("id", -1)
             )
+
             conn.execute(stmt)
 
     print("✔ Lecturas guardadas en sensoresDB.normalized_readings")
+
 
 
 def save_raw_data(json_data):
