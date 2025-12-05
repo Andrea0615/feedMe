@@ -21,7 +21,7 @@ def home_info():
 
     # Obtener su plan
     plan = PlanAlimenticio.query.filter_by(id_mascota=mascota.id_mascota).first()
-    horarios = Horario.query.filter_by(plan_id=plan.id_plan).order_by(Horario.hora).all()
+    horarios = Horario.query.filter_by(id_plan=plan.id_plan).order_by(Horario.hora).all()
 
     # Tomar siguiente horario
     proxima = horarios[0].hora.isoformat() if horarios else None
