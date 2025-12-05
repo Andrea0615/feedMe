@@ -52,7 +52,9 @@ export function updateUserInfo(data) {
 export function updateHorarios(horarios) {
   return API.put("/mascota/horarios", {horarios,});
 }
-
+export function getEventosHistorial() {
+    return API.get("/events/history");
+}
 
 
 export default API;
