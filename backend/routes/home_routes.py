@@ -11,7 +11,7 @@ home_bp = Blueprint("home_bp", __name__)
 @login_required
 def home_info():
     usuario = Usuario.query.get(request.user_id)
-    mascota = Mascota.query.filter_by(usuario_id=usuario.id_cuenta).first()
+    mascota = Mascota.query.filter_by(id_cuenta=usuario.id_cuenta).first()
 
     if not mascota:
         return jsonify({
