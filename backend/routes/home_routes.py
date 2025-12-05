@@ -20,7 +20,7 @@ def home_info():
         })
 
     # Obtener su plan
-    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id_mascota).first()
+    plan = PlanAlimenticio.query.filter_by(id_mascota=mascota.id_mascota).first()
     horarios = Horario.query.filter_by(plan_id=plan.id_plan).order_by(Horario.hora).all()
 
     # Tomar siguiente horario
