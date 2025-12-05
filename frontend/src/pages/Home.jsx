@@ -34,7 +34,7 @@ function Home() {
     return (
         <div className="home-container">
             <div className="home-header">
-                <h2 className="greeting"><i className="fas fa-hand-wave"></i> Hola, {data.nombre_usuario}</h2>
+                <h2 className="greeting">Hola, {data.nombre_usuario} <i className="fas fa-hand"></i></h2>
                 <button
                     className="btn-notifications"
                     onClick={() => navigate("/eventos")}

@@ -86,13 +86,18 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 2rem;
     gap: 1rem;
 }
 
 .empty-icon {
-    font-size: 4rem;
-    animation: bounce 2s infinite;
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    color: #2F5DA8;
+}
+
+.empty-icon i {
+    color: #2F5DA8;
 }
 
 .empty-state h3 {

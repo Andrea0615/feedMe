@@ -50,7 +50,7 @@ function MascotaInfo() {
                         className="btn-view-camera"
                         onClick={() => navigate("/ver-camara")}
                     >
-                        Ver
+                        <i className="fas fa-camera"></i>
                     </button>
                 </div>
 
