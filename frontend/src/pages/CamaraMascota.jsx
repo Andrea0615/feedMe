@@ -5,7 +5,7 @@ import "../styles/camara.css";
 
 function CamaraMascota() {
     const iframeRef = useRef(null);
-    const cameraIP = "10.42.0.77:81/stream";
+    const cameraIP = "172.20.10.3:81/stream";
     const navigate = useNavigate();
     const [nombreMascota, setNombreMascota] = useState("");
 
