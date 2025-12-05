@@ -38,7 +38,7 @@ def registrar_mascota():
         nombre=m["nombre"],
         edad=m.get("edad"),
         peso_kg=m.get("peso"),
-        usuario_id=request.user_id
+        id_cuenta=request.user_id
     )
     db.session.add(mascota)
     db.session.flush()
