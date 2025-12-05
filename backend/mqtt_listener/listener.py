@@ -1,17 +1,25 @@
+import os, sys
 import json
 import paho.mqtt.client as mqtt
+
+# 🔥 AÑADIR RUTA PARA QUE PYTHON ENCUENTRE server.py
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+# Ahora sí podemos importarlo
+from server import create_app
 
 from utils.readings_saver import save_raw_data
 from utils.event_detector import detect_and_get_events
 from services.event_service import save_event
 
-# IMPORTANTE: necesitamos la app de Flask para usar db.session
-from app import create_app  
-flask_app = create_app()
 
 BROKER = "broker.hivemq.com"
 TOPIC = "IoT/testESP32/pub"
 USER_ID = 1
+
+
+# Creamos instancia de la app para usar db.session
+flask_app = create_app()
 
 
 def on_connect(client, userdata, flags, rc):
@@ -31,7 +39,7 @@ def on_message(client, userdata, msg):
         events = detect_and_get_events(data, USER_ID)
         print("EVENTOS DETECTADOS:", events)
 
-        # 3️⃣ Guardarlos en appDB (EN CONTEXTO DE FLASK)
+        # 3️⃣ Guardarlos en appDB con app_context()
         with flask_app.app_context():
             for e_type, priority, timestamp in events:
                 if e_type and priority > 0:
