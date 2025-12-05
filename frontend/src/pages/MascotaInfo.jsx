@@ -25,7 +25,16 @@ function MascotaInfo() {
 
     return (
         <div className="container mt-4 mb-4">
-            <h2>Detalles</h2>
+            <div className="detalles-header">
+                <h2>Detalles</h2>
+                <button
+                    className="btn-edit-mascota"
+                    onClick={() => navigate("/editar-mascota")}
+                    title="Editar mascota"
+                >
+                    ✎
+                </button>
+            </div>
 
             <div className="pet-card-full">
                 <img
@@ -63,8 +72,8 @@ function MascotaInfo() {
                     <h5>Horarios de comida</h5>
                     <button
                         className="btn-edit-card"
-                        onClick={() => navigate("/editar-mascota")}
-                        title="Editar información"
+                        onClick={() => navigate("/horarios/editar")}
+                        title="Editar horarios"
                     >
                         ✎
                     </button>
