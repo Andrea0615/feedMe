@@ -1,0 +1,224 @@
+.camara-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.camara-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(94, 198, 232, 0.2);
+    box-shadow: 0 2px 8px rgba(47, 93, 168, 0.08);
+}
+
+.camara-header h2 {
+    color: #2F5DA8;
+    font-size: 1.5rem;
+    margin: 0;
+    flex: 1;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.btn-close {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: linear-gradient(135deg, #2F5DA8 0%, #1e4478 100%);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(47, 93, 168, 0.3);
+}
+
+.btn-close:hover {
+    background: linear-gradient(135deg, #254a84 0%, #1a3860 100%);
+    box-shadow: 0 6px 20px rgba(47, 93, 168, 0.4);
+    transform: scale(1.05);
+}
+
+.btn-close:active {
+    transform: scale(0.95);
+}
+
+.camara-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%);
+    overflow: hidden;
+    padding: 2rem 1.5rem;
+    position: relative;
+}
+
+.camara-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(94, 198, 232, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.camara-iframe {
+    width: 100%;
+    height: 100%;
+    max-width: 90%;
+    max-height: 85%;
+    border: none;
+    border-radius: 32px;
+    object-fit: contain;
+    box-shadow: 
+        0 20px 60px rgba(47, 93, 168, 0.25),
+        0 0 120px rgba(94, 198, 232, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(2px);
+    position: relative;
+    z-index: 2;
+}
+
+.camara-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5rem 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(94, 198, 232, 0.2);
+    box-shadow: 0 -2px 8px rgba(47, 93, 168, 0.08);
+}
+
+.btn-control {
+    width: 56px;
+    height: 56px;
+    border: none;
+    background: linear-gradient(135deg, #2F5DA8 0%, #1e4478 100%);
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 16px rgba(47, 93, 168, 0.3);
+    font-weight: 600;
+}
+
+.btn-control:hover {
+    background: linear-gradient(135deg, #5EC6E8 0%, #3ba8d4 100%);
+    box-shadow: 0 8px 24px rgba(94, 198, 232, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-control:active {
+    transform: scale(0.95);
+}
+
+.btn-control.btn-volver {
+    min-width: 120px;
+    border-radius: 12px;
+    width: auto;
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #5EC6E8 0%, #3ba8d4 100%);
+}
+
+.btn-control.btn-volver:hover {
+    background: linear-gradient(135deg, #4db8d8 0%, #2b9cc8 100%);
+}
+
+/* Status indicator */
+.camara-status {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 10;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    background: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+    }
+    50% {
+        opacity: 0.7;
+        box-shadow: 0 0 6px rgba(16, 185, 129, 0.3);
+    }
+}
+
+/* Responsive */
+@media (max-width: 450px) {
+    .camara-container {
+        height: 100vh;
+    }
+
+    .camara-header {
+        padding: 1rem 1rem;
+    }
+
+    .camara-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .btn-close {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+
+    .camara-content {
+        padding: 1.5rem 1rem;
+    }
+
+    .camara-iframe {
+        border-radius: 24px;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .camara-controls {
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1.25rem;
+    }
+
+    .btn-control {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .btn-control.btn-volver {
+        width: 100%;
+        min-width: unset;
+    }
+}

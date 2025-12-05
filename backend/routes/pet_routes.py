@@ -38,7 +38,7 @@ def registrar_mascota():
         nombre=m["nombre"],
         edad=m.get("edad"),
         peso_kg=m.get("peso"),
-        usuario_id=request.user_id
+        id_cuenta=request.user_id
     )
     db.session.add(mascota)
     db.session.flush()
@@ -47,7 +47,7 @@ def registrar_mascota():
     a = data["alimentacion"]
     plan = PlanAlimenticio(
         objetivo="Plan generado automáticamente",
-        mascota_id=mascota.id_mascota
+        id_mascota=mascota.id_mascota
     )
     db.session.add(plan)
     db.session.flush()
@@ -61,7 +61,7 @@ def registrar_mascota():
         horario = Horario(
             hora=hora_obj,
             porcion=h["porcion"],
-            plan_id=plan.id_plan
+            id_plan=plan.id_plan
         )
         db.session.add(horario)
 
@@ -174,7 +174,7 @@ def editar_horarios():
         nuevo_horario = Horario(
             hora=hora_obj,
             porcion=porcion,
-            id_plan=plan.id
+            id_plan=plan.id_plan
         )
         db.session.add(nuevo_horario)
 
