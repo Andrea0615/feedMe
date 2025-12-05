@@ -22,6 +22,11 @@
     flex: 1;
 }
 
+.greeting i {
+    color: #2F5DA8;
+    margin-right: 0.5rem;
+}
+
 .btn-edit-header {
     width: 40px;
     height: 40px;

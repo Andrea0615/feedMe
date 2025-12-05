@@ -163,3 +163,22 @@ h5 {
     color: #2F5DA8;
     margin-bottom: 0.5rem;
 }
+
+/* Font Awesome Icons Color */
+i.fas {
+    color: #2F5DA8;
+}
+
+.navbar-brand i,
+.nav-link i,
+.btn i,
+.greeting i,
+.btn-notifications i,
+.empty-icon i,
+.profile-avatar i,
+.profile-detail i,
+.badge-label i,
+.btn-edit-mascota i,
+.btn-edit-card i {
+    color: inherit;
+}

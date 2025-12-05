@@ -18,28 +18,31 @@
 }
 
 .navbar-brand {
-    font-size: 1.25rem;
-    font-weight: 700;
     color: #2F5DA8;
+    font-weight: 700;
     text-decoration: none;
-    letter-spacing: -0.5px;
+    font-size: 1.25rem;
+}
+
+.navbar-brand i {
+    color: #2F5DA8;
+    margin-right: 0.5rem;
+}
+
+.nav-link {
+    color: #2F5DA8;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.nav-link i {
+    color: #2F5DA8;
 }
 
 .navbar-actions {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-}
-
-.nav-link {
-    font-size: 1.5rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform 0.2s ease;
-}
-
-.nav-link:hover {
-    transform: scale(1.1);
 }
 
 .btn-nav-primary {
