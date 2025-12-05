@@ -26,7 +26,7 @@ function Perfil() {
             <h2>Mi Perfil</h2>
 
             <div className="profile-card">
-                <div className="profile-avatar">👤</div>
+                <div className="profile-avatar"><i className="fas fa-user fa-2x"></i></div>
                 <h3>{user.nombre}</h3>
                 <p className="profile-email">{user.correo}</p>
             </div>
@@ -34,11 +34,11 @@ function Perfil() {
             <div className="card p-4 mb-4">
                 <h5>Detalles</h5>
                 <div className="profile-detail">
-                    <span className="detail-label">👤 Nombre</span>
+                    <span className="detail-label"><i className="fas fa-user"></i> Nombre</span>
                     <span className="detail-value">{user.nombre}</span>
                 </div>
                 <div className="profile-detail">
-                    <span className="detail-label">📧 Correo</span>
+                    <span className="detail-label"><i className="fas fa-envelope"></i> Correo</span>
                     <span className="detail-value">{user.correo}</span>
                 </div>
             </div>
@@ -47,7 +47,7 @@ function Perfil() {
                 className="btn btn-primary btn-large w-100"
                 onClick={() => navigate("/editar-perfil")}
             >
-                ✎ Editar Perfil
+                <i className="fas fa-edit"></i> Editar Perfil
             </button>
         </div>
     );

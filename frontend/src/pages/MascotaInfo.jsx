@@ -32,7 +32,7 @@ function MascotaInfo() {
                     onClick={() => navigate("/editar-mascota")}
                     title="Editar mascota"
                 >
-                    ✎
+                    <i className="fas fa-edit"></i>
                 </button>
             </div>
 
@@ -54,14 +54,13 @@ function MascotaInfo() {
                     </button>
                 </div>
 
-
                 <div className="pet-badges">
                     <span className="badge-item">
-                        <span className="badge-label">Edad</span>
+                        <span className="badge-label"><i className="fas fa-birthday-cake"></i> Edad</span>
                         <span className="badge-value">{data.mascota.edad} años</span>
                     </span>
                     <span className="badge-item">
-                        <span className="badge-label">Peso</span>
+                        <span className="badge-label"><i className="fas fa-weight"></i> Peso</span>
                         <span className="badge-value">{data.mascota.peso_kg} kg</span>
                     </span>
                 </div>
@@ -75,7 +74,7 @@ function MascotaInfo() {
                         onClick={() => navigate("/horarios/editar")}
                         title="Editar horarios"
                     >
-                        ✎
+                        <i className="fas fa-edit"></i>
                     </button>
                 </div>
                 <div className="card-body">
@@ -93,4 +92,5 @@ function MascotaInfo() {
     );
 }
 
+export default MascotaInfo;
 export default MascotaInfo;

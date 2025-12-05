@@ -34,20 +34,20 @@ function Home() {
     return (
         <div className="home-container">
             <div className="home-header">
-                <h2 className="greeting">Hola, {data.nombre_usuario} 👋</h2>
+                <h2 className="greeting"><i className="fas fa-hand-wave"></i> Hola, {data.nombre_usuario}</h2>
                 <button
                     className="btn-notifications"
                     onClick={() => navigate("/eventos")}
                     title="Ver notificaciones"
                 >
-                    🔔
+                    <i className="fas fa-bell"></i>
                 </button>
             </div>
 
             {!data.tiene_mascota ? (
                 <div className="home-content">
                     <div className="empty-state">
-                        <div className="empty-icon">🐾</div>
+                        <div className="empty-icon"><i className="fas fa-paw fa-3x"></i></div>
                         <h3>Sin mascota registrada</h3>
                         <p>Comienza a registrar a tu mascota para gestionar sus horarios de comida</p>
                     </div>

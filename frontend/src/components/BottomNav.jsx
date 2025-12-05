@@ -29,7 +29,7 @@ function BottomNav() {
                 onClick={handleBack}
                 title="Atrás"
             >
-                ←
+                <i className="fas fa-arrow-left"></i>
             </button>
 
             <button 
@@ -37,9 +37,7 @@ function BottomNav() {
                 onClick={handleHome}
                 title="Inicio"
             >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                </svg>
+                <i className="fas fa-home"></i>
             </button>
 
             <button 
@@ -47,7 +45,7 @@ function BottomNav() {
                 onClick={handleForward}
                 title="Siguiente"
             >
-                →
+                <i className="fas fa-arrow-right"></i>
             </button>
         </nav>
     );
