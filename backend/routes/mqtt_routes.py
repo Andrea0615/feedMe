@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils.token import login_required
-from eventos import detect_and_get_events
+from services.event_service import detect_and_get_events
 from utils.event_saver import save_detected_events
 
 mqtt_bp = Blueprint("mqtt_bp", __name__)

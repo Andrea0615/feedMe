@@ -1,37 +1,46 @@
 import json
 import paho.mqtt.client as mqtt
 
+from utils.readings_saver import save_raw_data
 from utils.event_detector import detect_and_get_events
 from services.event_service import save_event
 
 BROKER = "broker.hivemq.com"
 TOPIC = "IoT/testESP32/pub"
+USER_ID = 1  # ya lo dinamizaremos
+
+
+def on_connect(client, userdata, flags, rc):
+    print("MQTT conectado:", rc)
+    client.subscribe(TOPIC)
+
 
 def on_message(client, userdata, msg):
     try:
         data = json.loads(msg.payload.decode())
-        print("📩 MQTT recibido:", data)
+        print("\n📥 Recibido MQTT:", data)
 
-        user_id = data.get("user_id")  # debe venir desde ESP32
+        # 1️⃣ Guardar en sensoresDB
+        save_raw_data(data)
 
-        eventos = detect_and_get_events(data, user_id)
+        # 2️⃣ Detectar eventos
+        events = detect_and_get_events(data, USER_ID)
 
-        for tipo, prioridad, fecha in eventos:
-            if tipo != "" and prioridad > 0:
-                save_event(tipo, prioridad, fecha, user_id)
+        # 3️⃣ Guardarlos en appDB
+        for e_type, priority, timestamp in events:
+            if e_type and priority > 0:
+                save_event(e_type, priority, timestamp, USER_ID)
+
+        print("✔ Procesado correctamente\n")
 
     except Exception as e:
         print("❌ Error procesando MQTT:", e)
 
-def start_listener():
+
+def start_mqtt_listener():
     client = mqtt.Client()
-    client.connect(BROKER, 1883)
-    client.subscribe(TOPIC)
+    client.on_connect = on_connect
     client.on_message = on_message
 
-    print("📡 MQTT Listener activo en", TOPIC)
+    client.connect(BROKER, 1883, 60)
     client.loop_forever()
-
-
-if __name__ == "__main__":
-    start_listener()
