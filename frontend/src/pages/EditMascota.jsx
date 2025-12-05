@@ -6,9 +6,17 @@ function EditMascota() {
     const [nombre, setNombre] = useState("");
     const [edad, setEdad] = useState("");
     const [peso, setPeso] = useState("");
+    const [objetivo, setObjetivo] = useState("");
     const [loading, setLoading] = useState(false);
-
     const navigate = useNavigate();
+
+    const objetivos = [
+        "Mantener peso",
+        "Bajar de peso",
+        "Subir de peso",
+        "Cachorro activo",
+        "Adulto mayor"
+    ];
 
     useEffect(() => {
         async function load() {
@@ -19,6 +27,7 @@ function EditMascota() {
                 setNombre(m.nombre);
                 setEdad(m.edad);
                 setPeso(m.peso_kg);
+                setObjetivo(m.objetivo || "");
             } catch (err) {
                 console.log(err);
                 navigate("/");
@@ -35,7 +44,8 @@ function EditMascota() {
             await actualizarMascota({
                 nombre,
                 edad: Number(edad),
-                peso_kg: Number(peso)
+                peso_kg: Number(peso),
+                objetivo
             });
 
             alert("Mascota actualizada ✅");
@@ -74,7 +84,7 @@ function EditMascota() {
                     />
                 </div>
 
-                <div className="mb-4">
+                <div className="mb-3">
                     <label className="form-label">Peso (kg)</label>
                     <input
                         className="form-control"
@@ -84,6 +94,23 @@ function EditMascota() {
                         onChange={(e) => setPeso(e.target.value)}
                         required
                     />
+                </div>
+
+                <div className="mb-4">
+                    <label className="form-label">Objetivo de salud</label>
+                    <select
+                        className="form-control"
+                        value={objetivo}
+                        onChange={(e) => setObjetivo(e.target.value)}
+                        required
+                    >
+                        <option value="">Selecciona un objetivo</option>
+                        {objetivos.map((obj) => (
+                            <option key={obj} value={obj}>
+                                {obj}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <button className="btn btn-primary btn-large w-100" disabled={loading}>

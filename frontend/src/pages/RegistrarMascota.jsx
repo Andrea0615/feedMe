@@ -6,10 +6,19 @@ function RegistrarMascota() {
     const [nombre, setNombre] = useState("");
     const [edad, setEdad] = useState("");
     const [peso, setPeso] = useState("");
+    const [objetivo, setObjetivo] = useState("");
     const [comidasPorDia, setComidasPorDia] = useState(1);
     const [horarios, setHorarios] = useState([{ hora: "", porcion: "" }]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    const objetivos = [
+        "Mantener peso",
+        "Bajar de peso",
+        "Subir de peso",
+        "Cachorro activo",
+        "Adulto mayor"
+    ];
 
     const agregarHorario = () => {
         setHorarios([...horarios, { hora: "", porcion: "" }]);
@@ -33,7 +42,8 @@ function RegistrarMascota() {
             mascota: {
                 nombre,
                 edad: Number(edad),
-                peso: Number(peso)
+                peso: Number(peso),
+                objetivo
             },
             alimentacion: {
                 comidas_por_dia: Number(comidasPorDia),
@@ -94,6 +104,23 @@ function RegistrarMascota() {
                             value={peso}
                             onChange={(e) => setPeso(e.target.value)}
                         />
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Objetivo de salud</label>
+                        <select
+                            className="form-control"
+                            value={objetivo}
+                            onChange={(e) => setObjetivo(e.target.value)}
+                            required
+                        >
+                            <option value="">Selecciona un objetivo</option>
+                            {objetivos.map((obj) => (
+                                <option key={obj} value={obj}>
+                                    {obj}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
