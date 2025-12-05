@@ -3,6 +3,7 @@ import { getMascotaInfo } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../styles/mascota.css";
 
+
 function MascotaInfo() {
     const [data, setData] = useState(null);
     const navigate = useNavigate();
@@ -33,7 +34,17 @@ function MascotaInfo() {
                     className="pet-image-full"
                 />
 
-                <h2 className="pet-name-full">{data.mascota.nombre}</h2>
+                <div className="pet-name-row">
+                    <h2 className="pet-name-full">{data.mascota.nombre}</h2>
+
+                    <button
+                        className="btn-view-camera"
+                        onClick={() => navigate("/ver-camara")}
+                    >
+                        Ver
+                    </button>
+                </div>
+
 
                 <div className="pet-badges">
                     <span className="badge-item">
