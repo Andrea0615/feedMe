@@ -94,10 +94,15 @@
     font-size: 5rem;
     margin-bottom: 1.5rem;
     color: #2F5DA8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 6rem;
 }
 
 .empty-icon i {
     color: #2F5DA8;
+    animation: bounce 2s infinite;
 }
 
 .empty-state h3 {
