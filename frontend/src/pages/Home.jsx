@@ -35,6 +35,13 @@ function Home() {
         <div className="home-container">
             <div className="home-header">
                 <h2 className="greeting">Hola, {data.nombre_usuario} 👋</h2>
+                <button
+                    className="btn-notifications"
+                    onClick={() => navigate("/eventos")}
+                    title="Ver notificaciones"
+                >
+                    🔔
+                </button>
             </div>
 
             {!data.tiene_mascota ? (
