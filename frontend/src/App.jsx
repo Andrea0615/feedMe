@@ -36,7 +36,7 @@ function App() {
                 <Route path="/horarios/editar" element={<PrivateRoute> <EditarHorarios /> </PrivateRoute>} />
                 <Route path="/ver-camara" element={<CamaraMascota />} />
                 <Route path="/mascota" element={<CamaraMascota />} />
-                <Route path="/eventos" element={<EventosHistorial.jsx />} />
+                <Route path="/eventos" element={<EventosHistorial />} />
             </Routes>
             <BottomNav />
         </BrowserRouter>
