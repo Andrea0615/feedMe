@@ -38,7 +38,7 @@ def registrar_mascota():
         nombre=m["nombre"],
         edad=m.get("edad"),
         peso_kg=m.get("peso"),
-        id_cuenta=request.user_id
+        usuario_id=request.user_id
     )
     db.session.add(mascota)
     db.session.flush()
@@ -47,7 +47,7 @@ def registrar_mascota():
     a = data["alimentacion"]
     plan = PlanAlimenticio(
         objetivo="Plan generado automáticamente",
-        id_mascota=mascota.id_mascota
+        mascota_id=mascota.id_mascota
     )
     db.session.add(plan)
     db.session.flush()
@@ -61,7 +61,7 @@ def registrar_mascota():
         horario = Horario(
             hora=hora_obj,
             porcion=h["porcion"],
-            id_plan=plan.id_plan
+            plan_id=plan.id_plan
         )
         db.session.add(horario)
 
@@ -88,17 +88,17 @@ def registrar_mascota():
 @mascotas_bp.route("/info", methods=["GET"])
 @login_required
 def obtener_mascota():
-    mascota = Mascota.query.filter_by(usuario_id=request.user_id).first()
+    mascota = Mascota.query.filter_by(id_cuenta=request.user_id).first()
 
     if not mascota:
         return jsonify({"error": "No hay mascota registrada"}), 404
 
-    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id_mascota).first()
+    plan = PlanAlimenticio.query.filter_by(id_mascota=mascota.id_mascota).first()
 
     if not plan:
         return jsonify({"error": "No hay plan alimenticio registrado"}), 404
 
-    horarios = Horario.query.filter_by(plan_id=plan.id_plan).order_by(Horario.hora).all()
+    horarios = Horario.query.filter_by(id_plan=plan.id_plan).order_by(Horario.hora).all()
 
     horarios_data = [
         {
@@ -127,7 +127,7 @@ def obtener_mascota():
 def editar_mascota():
     data = request.get_json()
 
-    mascota = Mascota.query.filter_by(usuario_id=request.user_id).first()
+    mascota = Mascota.query.filter_by(id_cuenta=request.user_id).first()
 
     if not mascota:
         return jsonify({"error": "No hay mascota registrada"}), 404
@@ -153,16 +153,16 @@ def editar_horarios():
     if not horarios_nuevos:
         return jsonify({"error": "Debes enviar al menos un horario"}), 400
 
-    mascota = Mascota.query.filter_by(usuario_id=request.user_id).first()
+    mascota = Mascota.query.filter_by(id_cuenta=request.user_id).first()
     if not mascota:
         return jsonify({"error": "Mascota no encontrada"}), 404
 
-    plan = PlanAlimenticio.query.filter_by(mascota_id=mascota.id_mascota).first()
+    plan = PlanAlimenticio.query.filter_by(id_mascota=mascota.id_mascota).first()
     if not plan:
         return jsonify({"error": "Plan alimenticio no encontrado"}), 404
 
     # Borrar horarios actuales
-    Horario.query.filter_by(plan_id=plan.id_plan).delete()
+    Horario.query.filter_by(id_plan=plan.id_plan).delete()
 
     horarios_payload = []  # MQTT
 
@@ -174,7 +174,7 @@ def editar_horarios():
         nuevo_horario = Horario(
             hora=hora_obj,
             porcion=porcion,
-            plan_id=plan.id
+            id_plan=plan.id
         )
         db.session.add(nuevo_horario)
 
