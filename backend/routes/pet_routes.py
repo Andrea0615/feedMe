@@ -174,7 +174,7 @@ def editar_horarios():
         nuevo_horario = Horario(
             hora=hora_obj,
             porcion=porcion,
-            id_plan=plan.id
+            id_plan=id_plan
         )
         db.session.add(nuevo_horario)
 
