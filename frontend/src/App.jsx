@@ -16,6 +16,7 @@ import Perfil from "./pages/Perfil";
 import EditarPerfil from "./pages/EditarPerfil";
 import EditarHorarios from "./pages/EditarHorarios";
 import CamaraMascota from "./pages/CamaraMascota";
+import EventosHistorial from "./pages/EventosHistorial.jsx";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/horarios/editar" element={<PrivateRoute> <EditarHorarios /> </PrivateRoute>} />
                 <Route path="/ver-camara" element={<CamaraMascota />} />
                 <Route path="/mascota" element={<CamaraMascota />} />
+                <Route path="/eventos" element={<EventosHistorial.jsx />} />
             </Routes>
             <BottomNav />
         </BrowserRouter>
