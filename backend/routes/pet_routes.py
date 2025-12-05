@@ -47,7 +47,7 @@ def registrar_mascota():
     a = data["alimentacion"]
     plan = PlanAlimenticio(
         objetivo="Plan generado automáticamente",
-        mascota_id=mascota.id_mascota
+        id_mascota=mascota.id_mascota
     )
     db.session.add(plan)
     db.session.flush()
