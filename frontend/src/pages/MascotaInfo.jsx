@@ -93,4 +93,3 @@ function MascotaInfo() {
 }
 
 export default MascotaInfo;
-export default MascotaInfo;
