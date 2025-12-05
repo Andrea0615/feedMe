@@ -25,6 +25,8 @@ def on_message(client, userdata, msg):
 
         # 2️⃣ Detectar eventos
         events = detect_and_get_events(data, USER_ID)
+        print("EVENTOS DETECTADOS:", events)
+
 
         # 3️⃣ Guardarlos en appDB
         for e_type, priority, timestamp in events:
